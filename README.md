@@ -41,12 +41,21 @@ if for some reason when instantiating the container the vendors are not installe
 ```shell
 composer install
 ```
-to run the tests write the following line:
-```shell
-vendor/bin/phpunit
-```
 
 to execute the solution you can write the following line in the console
 ```shell
 php coutput.php
+```
+estos son los registros cargados por defecto en el archivo **/var/www/html/input.txt**
+```markdown
+RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,SU20:00-21:00
+ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00
+IRVING=SU10:00-12:00,SA12:00-14:00
+ZULAY=SU08:00-12:00,MO08:30:00-17:30
+```
+You can modify this file to generate inputs and test more cases.
+### tests
+to run the tests write the following line:
+```shell
+vendor/bin/phpunit
 ```
