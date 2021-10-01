@@ -2,7 +2,6 @@
 
 ## About the solution
 
----
 for this solution it is a hexagonal architecture pattern. divide the dependencies respecting the communication layers.
 
 The central solution is in the following recursive function that evaluates inversely according to the hourly pay rule.
@@ -29,7 +28,6 @@ when the need for recursion is detected, only the missing missing schedules are 
 
 ## Deploy
 
----
 
 The repository has a fast deployment thanks to docker
 
