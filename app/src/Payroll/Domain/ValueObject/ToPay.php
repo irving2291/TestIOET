@@ -23,7 +23,12 @@ class ToPay
         $this->value = $value;
     }
 
-    public function value(): string
+    public function value(): float
+    {
+        return $this->value;
+    }
+
+    public function getFormatValue(): string
     {
         return number_format($this->value, 2);
     }

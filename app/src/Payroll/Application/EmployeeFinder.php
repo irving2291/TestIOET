@@ -13,11 +13,6 @@ class EmployeeFinder
         $this->repository = $repository;
     }
 
-    public function __invoke()
-    {
-
-    }
-
     public function all()
     {
         return $this->repository->all();

@@ -13,9 +13,4 @@ final class FileRepository implements EmployeeRepository
     {
         return (new \Irving2291\Ioettest\Payroll\Infrastructure\Persistence\File\Mutator())->getData();
     }
-
-    public function find(Name $name): Employee
-    {
-        return new Employee($name, [], []);
-    }
 }

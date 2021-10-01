@@ -9,7 +9,7 @@
         beStrictAboutChangesToGlobalState="true"
         beStrictAboutTestsThatDoNotTestAnything="false"
         beStrictAboutTodoAnnotatedTests="true"
-        bootstrap="./apps/bootstrap.php"
+        bootstrap="./index.php"
         colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
@@ -22,16 +22,7 @@
         stopOnRisky="true"
         verbose="false">
 
-    <php>
-        <ini name="error_reporting" value="-1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-        <env name="APP_ENV" value="test"/>
-    </php>
-
     <testsuites>
-        <testsuite name="backend">
-            <directory>./tests/app</directory>
-        </testsuite>
         <testsuite name="src">
             <directory>./tests/src</directory>
         </testsuite>

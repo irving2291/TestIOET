@@ -16,15 +16,6 @@ require $rootPath . '/vendor/autoload.php';
 
 // Abriendo el archivo
 
-// name
-$Finder = new \Irving2291\Ioettest\Payroll\Application\EmployeeFinder(
-    new \Irving2291\Ioettest\Payroll\Infrastructure\Persistence\FileRepository()
-);
-echo "<pre>";
-foreach ($Finder->all() as $employee) {
-    echo $employee . '<br>';
-}
-echo "</pre>";
 
 
 

@@ -24,6 +24,6 @@ final class Employee
 
     public function __toString()
     {
-        return "The amount to pay {$this->name->value()} is {$this->getPayment()->getRemuneration()->value()} USD";
+        return "The amount to pay {$this->name->value()} is {$this->getPayment()->getRemuneration()->getFormatValue()} USD";
     }
 }

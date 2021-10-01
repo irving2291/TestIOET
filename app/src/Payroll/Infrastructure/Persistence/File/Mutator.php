@@ -20,10 +20,10 @@ final class Mutator
         $this->days = require_once "$rootPath/File/days.php";
     }
 
-    public function getData():array
+    public function getData(string $dir = 'input.txt'):array
     {
         try {
-            $input = FileReader::nextLine('input.txt');
+            $input = FileReader::nextLine($dir);
 
             if (empty($input)) throw new Exception('no records found in payroll');
             $data = [];
@@ -44,12 +44,12 @@ final class Mutator
     {
         try {
             $row = explode('=', $item);
-            $name = $row[0];
+            $name =& $row[0];
             $days = explode(',', $row[1]);
             $data = [];
             foreach ($days as $value) {
                 $d = preg_replace("/[^A-Z]+/", "", $value);
-                $normalDay = $this->days[$d];
+                $normalDay =& $this->days[$d];
 
                 if (is_null($normalDay))
                     throw new Exception("there is an error in the register, it may be due to the order and format of the register for the employee named $name");
@@ -68,7 +68,8 @@ final class Mutator
             return new Employee(new Name($name), $data, $this->hourly);
         } catch (Exception $e) {
             echo json_encode([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'trace' => $e->getTrace()
             ]);
             exit();
         }
