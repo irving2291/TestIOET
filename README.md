@@ -1,6 +1,6 @@
 # Exercise for payroll of the ACME company
 
-##About the solution
+## About the solution
 
 ---
 for this solution it is a hexagonal architecture pattern. divide the dependencies respecting the communication layers.
@@ -27,7 +27,7 @@ private function sumRecursive(float $toPay, array $hourly, int $hoursWorked, $in
 It is also evaluated in minutes, so the value per minute done in an hour is calculated and distributed to the time worked according to the time ranges performed.
 when the need for recursion is detected, only the missing missing schedules are evaluated.
 
-##Deploy
+## Deploy
 
 ---
 
@@ -37,7 +37,7 @@ The repository has a fast deployment thanks to docker
 docker-compose up -d
 ```
 
-###in the container console called php"testioet_php"
+### in the container console called php"testioet_php"
 if for some reason when instantiating the container the vendors are not installed automatically, write the following line in the php console
 
 ```shell
