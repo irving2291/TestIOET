@@ -13,12 +13,19 @@ final class Payment
     private ToPay $toPay;
     private array $hourly;
 
-    public function __construct(array $payload)
+    public function __construct(array $payload, $hourly)
     {
         $this->payload = $payload;
         $this->toPay = new ToPay(0.0);
+        $this->hourly = $hourly;
     }
 
+    /**
+     * string to second hour and minutes
+     * @param string $h
+     * @param string $m
+     * @return int
+     */
     private function toSecond(string $h, string $m): int
     {
         return (intval($h)*60) + intval($m);
@@ -28,7 +35,6 @@ final class Payment
      * The algorithm of this method evaluates the amount to be paid per hour worked by inverting
      * the hours of the working day and taking the coincidence of the entry time and at the same
      * time calculating the time difference against the end of the range of the working day
-     *
      * @param float $toPay
      * @param array $hourly
      * @param int $hoursWorked
@@ -40,12 +46,12 @@ final class Payment
         foreach ($hourly as $betweenHour => $salary) {
             $betweenData = explode('-', $betweenHour);
             if ($initTime>=$betweenData[0]) {
-                $diffHour = $toPay>0?($betweenData[1]-$initTime)+1:($betweenData[1]-$initTime);
                 unset($hourly[$betweenHour]);
+                $diffHour = $toPay>0?($betweenData[1]-$initTime)+1:($betweenData[1]-$initTime);
                 return (($diffHour - $hoursWorked) > 0)
-                    ? $toPay += $this->calculateSalary($salary, $hoursWorked)
+                    ? $toPay + $this->calculateSalary($salary, $hoursWorked)
                     : $this->sumRecursive(
-                        $toPay += $this->calculateSalary($salary, $diffHour)
+                        $toPay + $this->calculateSalary($salary, $diffHour)
                         , $hourly, ($hoursWorked-$diffHour), ($initTime+$diffHour)+1);
             }
         }
@@ -77,6 +83,11 @@ final class Payment
         $this->toPay->setValue($toPay);
     }
 
+    /**
+     * detect if it is weekday or weekend
+     * @param DateTime $date
+     * @return bool
+     */
     private function isWeekend(DateTime $date): bool
     {
         return (date('N', strtotime($date->format('y-m-d'))) >= 6);
@@ -87,6 +98,10 @@ final class Payment
         return $this->hourly;
     }
 
+    /**
+     * returns the value to pay, if it is empty it tries to calculate it
+     * @return ToPay
+     */
     public function getRemuneration(): toPay
     {
         if (!$this->toPay->isEmpty()) return $this->toPay;

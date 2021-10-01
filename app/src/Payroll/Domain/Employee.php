@@ -10,23 +10,16 @@ final class Employee
 {
     private Name $name;
     private Payment $payment;
-    private array $hourly;
 
-    public function __construct(Name $name, array $paymentPayload)
+    public function __construct(Name $name, array $paymentPayload, array $hourly)
     {
         $this->name = $name;
-        $this->payment = new Payment($paymentPayload);
+        $this->payment = new Payment($paymentPayload, $hourly);
     }
 
     public function getPayment(): Payment
     {
-        $this->payment->setHourly($this->hourly);
         return $this->payment;
-    }
-
-    public function setHourly(array $hourly)
-    {
-        $this->hourly = $hourly;
     }
 
     public function __toString()

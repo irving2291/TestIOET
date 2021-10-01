@@ -12,7 +12,8 @@ final class FileReader
         $output = [];
         $file = fopen($dir, "r");
         while(!feof($file)){
-            $output[] = fgets($file);
+            $read = fgets($file);
+            ($read && !empty(trim((string)$read))) && $output[] = trim((string)$read);
         }
         fclose($file);
         return $output;
