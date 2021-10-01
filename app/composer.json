@@ -1,0 +1,20 @@
+{
+    "name": "irving2291/ioettest",
+    "autoload": {
+        "psr-4": {
+            "Irving2291\\Ioettest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irving Jacome",
+            "email": "irving2291@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.2"
+    }
+}
