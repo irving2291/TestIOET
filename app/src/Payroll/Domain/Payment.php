@@ -50,7 +50,7 @@ final class Payment
      * @param $initTime
      * @return float
      */
-    private function sumRecursive(float $toPay, array $hourly, int $hoursWorked, $initTime):float
+    private function sumRecursive(array $hourly, int $hoursWorked, $initTime, float $toPay = 0):float
     {
         foreach ($hourly as $betweenHour => $salary) {
             $betweenData = explode('-', $betweenHour);
@@ -60,8 +60,9 @@ final class Payment
                 return (($diffHour - $hoursWorked) > 0)
                     ? $toPay + $this->calculateSalary($salary, $hoursWorked)
                     : $this->sumRecursive(
-                        $toPay + $this->calculateSalary($salary, $diffHour)
-                        , $hourly, ($hoursWorked-$diffHour), ($initTime+$diffHour)+1);
+                        $hourly
+                        ,($hoursWorked-$diffHour), ($initTime+$diffHour)+1
+                        ,$toPay + $this->calculateSalary($salary, $diffHour));
             }
         }
         return $toPay;
@@ -70,6 +71,7 @@ final class Payment
     public function calculate(): void
     {
         $toPay = 0;
+
         foreach ($this->payload as $keyDay => $workTime) {
             $initTime = $this->toSecond(
                 $workTime[0]->format("H"),
@@ -83,8 +85,8 @@ final class Payment
             $hoursWorked = $endTime - $initTime;
 
             $hourly = $this->getHourly();
-            $hourlyReverse = $this->getHourly()->getList($workTime[0]);
-            $toPay += $this->sumRecursive(0, $hourlyReverse, $hoursWorked, $initTime);
+            $hourlyList = $this->getHourly()->getList($workTime[0]);
+            $toPay += $this->sumRecursive($hourlyList, $hoursWorked, $initTime);
         }
 
         $this->toPay->setValue($toPay);
