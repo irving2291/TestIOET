@@ -5,18 +5,22 @@ declare(strict_types=1);
 namespace Irving2291\Ioettest\Payroll\Domain;
 
 use DateTime;
+use Irving2291\Ioettest\Payroll\Domain\Adapters\HourlyAdapter;
 use Irving2291\Ioettest\Payroll\Domain\ValueObject\ToPay;
+use function Couchbase\defaultDecoder;
 
 final class Payment
 {
     private array $payload;
     private ToPay $toPay;
     private array $hourly;
+    private HourlyAdapter $hourlyAdapter;
 
     public function __construct(array $payload, $hourly)
     {
         $this->payload = $payload;
         $this->toPay = new ToPay(0.0);
+        $this->hourlyAdapter = new HourlyAdapter($hourly);
         $this->hourly = $hourly;
     }
 
@@ -29,6 +33,11 @@ final class Payment
     private function toSecond(string $h, string $m): int
     {
         return (intval($h)*60) + intval($m);
+    }
+
+    private function calculateSalary(float $salaryHour, int $seconds):float
+    {
+        return floatval(($salaryHour / 60) * $seconds);
     }
 
     /**
@@ -58,11 +67,6 @@ final class Payment
         return $toPay;
     }
 
-    private function calculateSalary(float $salaryHour, int $seconds):float
-    {
-        return floatval(($salaryHour / 60) * $seconds);
-    }
-
     public function calculate(): void
     {
         $toPay = 0;
@@ -75,8 +79,11 @@ final class Payment
                 $workTime[1]->format("H"),
                 $workTime[1]->format("i")
             );
+
             $hoursWorked = $endTime - $initTime;
-            $hourlyReverse = array_reverse($this->getHourly()[$this->isWeekend($workTime[0])?'weekend':'weekday']);
+
+            $hourly = $this->getHourly();
+            $hourlyReverse = $this->getHourly()->getList($workTime[0]);
             $toPay += $this->sumRecursive(0, $hourlyReverse, $hoursWorked, $initTime);
         }
 
@@ -93,9 +100,10 @@ final class Payment
         return (date('N', strtotime($date->format('y-m-d'))) >= 6);
     }
 
-    public function getHourly(): array
+    public function getHourly(): HourlyAdapter
     {
-        return $this->hourly;
+
+        return $this->hourlyAdapter;
     }
 
     /**
