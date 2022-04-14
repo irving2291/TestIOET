@@ -46,7 +46,7 @@ to execute the solution you can write the following line in the console
 ```shell
 php coutput.php
 ```
-estos son los registros cargados por defecto en el archivo **/var/www/html/input.txt**
+these are the records loaded by default in the file **/var/www/html/input.txt**
 ```markdown
 RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,SU20:00-21:00
 ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00
